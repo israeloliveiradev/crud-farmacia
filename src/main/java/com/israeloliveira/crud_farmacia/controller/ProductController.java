@@ -22,6 +22,9 @@ public class ProductController {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
         return ResponseEntity.ok(repository.findAll());
@@ -41,17 +44,25 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> post(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(repository.save(product));
+    public ResponseEntity<Product> post(@Valid @RequestBody Product product) {
+        if (categoryRepository.existsById(product.getCategory().getId()))
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(repository.save(product));
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category not found!", null);
     }
 
     @PutMapping
-    public ResponseEntity<Product> put(@Valid @RequestBody Product product) {
-        return repository.findById(product.getId())
-                .map(response -> ResponseEntity.status(HttpStatus.CREATED)
-                        .body(repository.save(product)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Product> put(@Valid @RequestBody Product product){
+        if (repository.existsById(product.getId())) {
+
+            if (categoryRepository.existsById(product.getCategory().getId()))
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(repository.save(product));
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category not found!", null);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,5 +77,6 @@ public class ProductController {
         repository.deleteById(id);
     }
 }
+
 
 
