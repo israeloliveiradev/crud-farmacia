@@ -1,6 +1,5 @@
 package com.israeloliveira.crud_farmacia.controller;
 
-import com.israeloliveira.crud_farmacia.model.Category;
 import com.israeloliveira.crud_farmacia.model.Product;
 import com.israeloliveira.crud_farmacia.repositories.CategoryRepository;
 import com.israeloliveira.crud_farmacia.repositories.ProductRepository;
@@ -79,6 +78,3 @@ public class ProductController {
         repository.deleteById(id);
     }
 }
-
-
-

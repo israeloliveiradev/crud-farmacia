@@ -1,3 +1,4 @@
+
 package com.israeloliveira.crud_farmacia.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -57,4 +58,3 @@ public class Category {
         this.product = product;
     }
 }
-

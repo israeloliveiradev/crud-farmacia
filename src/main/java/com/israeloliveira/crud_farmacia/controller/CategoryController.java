@@ -64,4 +64,3 @@ public class CategoryController {
         repository.deleteById(id);
     }
 }
-
